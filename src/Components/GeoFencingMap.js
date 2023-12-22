@@ -1,13 +1,12 @@
 // GeoFencingMap.js
 
 import React, { useState, useEffect } from 'react';
-import { GoogleMap, LoadScript, Circle, Marker, OverlayView, MarkerF, CircleF } from '@react-google-maps/api';
+import { GoogleMap, LoadScript,  MarkerF, CircleF } from '@react-google-maps/api';
 import { useGeoFencing } from '../Hooks/useGEoFencing';
 
 const mapContainerStyle = {
   height: '400px',
   width: '100%',
-
 };
 
 const GeoFencingMap = () => {
@@ -51,18 +50,20 @@ const GeoFencingMap = () => {
     fillOpacity: 0.2, // Opacity of the fill
     clickable: false
   };
+ 
+   
   const handleClickedMap = (e) => {
     
     isWithinGeoFence({
       latitude: e.latLng.lat(),
-      longtitude: e.latLng.lat()
+      longitude: e.latLng.lng()
     }, {
       lat: userLocation.lat,
       long: userLocation.long
     })
     console.log(isWithinGeoFence({
       latitude: e.latLng.lat(),
-      longtitude: e.latLng.lat(),
+      longitude: e.latLng.lng(),
 
     }, {
       lat: userLocation.lat,
@@ -70,21 +71,16 @@ const GeoFencingMap = () => {
     }), "checkoutside")
   }
   const handleClickInside = (e) => {
-    isWithinGeoFence({
-      latitude: e.latLng.lat(),
-      longtitude: e.latLng.lat()
-    }, {
-      lat: userLocation.lat,
-      long: userLocation.long
+    
+    checkIfInside({
+      lat: e.latLng.lat(),
+      lng: e.latLng.lng()
     })
-    console.log(isWithinGeoFence({
-      latitude: e.latLng.lat(),
-      longtitude: e.latLng.lat(),
-
-    }, {
-      lat: userLocation.lat,
-      long: userLocation.long
-    }), "checkinside")
+    console.log(checkIfInside({
+      lat: e.latLng.lat(),
+      lng: e.latLng.lng()
+    }),"checkifinside")
+   
   }
   return (
     <LoadScript googleMapsApiKey="AIzaSyBlegafUoRrp__B_PS-s7gywXdOrFbvR30">
@@ -96,9 +92,10 @@ const GeoFencingMap = () => {
       >
         <CircleF  {...geofenceOptions} onClick={handleClickInside} />
         {/* Marker for the user's location */}
-        {/* <MarkerF
+        <MarkerF
           position={center}
-        /> */}
+        />
+        
         {/* <button onClick={handleCreatePoint}>Create New Geofence Point</button> */}
       </GoogleMap>
     </LoadScript>
