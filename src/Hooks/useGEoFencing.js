@@ -7,21 +7,23 @@ class CircularGeofenceRegion {
         Object.assign(this, opts);
     }
 
-    inside(lat2, lon2) {
+    inside(pointer) {
         const lat1 = this.latitude;
         const lon1 = this.longitude;
+        const lat2=pointer.lat
+        const lon2=pointer.lng
         const R = 63710; // Earth's radius in m
 
         return Math.acos(
-            Math.sin(lat1) * Math.sin(lat2.lat) +
-            Math.cos(lat1) * Math.cos(lat2.lat) * Math.cos(lat2.lng - lon1)
+            Math.sin(lat1) * Math.sin(lat2) +
+            Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1)
         ) * R < this.radius;
     }
 
 }
 
 
-export const useGeoFencing = (argObj = { lat: 0, long: 0, radius: 100 }) => {
+export const useGeoFencing = (argObj = { lat: 0, lng: 0, radius: 100 }) => {
     let { lat, long, radius } = argObj;
 
     const [fence, setFence] = useState("");
